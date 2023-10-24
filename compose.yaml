@@ -1,0 +1,12 @@
+services:
+  kv-api:
+    build:
+      dockerfile: ./cmd/kv-api/Dockerfile
+    command: --insecure --kv-addr kv-grpc-server:9090
+    ports:
+      - "8080:8080"
+  kv-grpc-server:
+    build:
+      dockerfile: ./cmd/kv-grpc-server/Dockerfile
+    ports:
+      - "9090:9090"
