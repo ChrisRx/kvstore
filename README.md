@@ -9,6 +9,9 @@ kvstore is a Key-Value store composed of two services. The services are both wri
 - [Overview](#overview)
 - [Getting started](#getting-started)
   - [Using Docker Compose](#using-docker-compose)
+  - [Using Nix](#using-nix)
+    - [Install Nix](#installing-nix)
+    - [Build the Nix development environment](#build-the-nix-development-environment)
   - [Building and running manually](#building-and-running-manually)
   - [Testing with curl](#testing-with-curl)
 - [Development](#development)
@@ -30,7 +33,6 @@ Each binary is also built in a multi-stage container that produces [scratch](htt
 
 
 ## Getting started
-
 
 ### Using Docker Compose
 
@@ -60,6 +62,32 @@ kvstore-kv-api-1          | ⇨ http server started on [::]:8080
 When changes are made to the source code, the images can be rebuilt using `docker compose build` and then re-running `docker compose up`
 
 With the two containers now running, [test with curl](#testing-with-curl) and ensure everything is working.
+
+
+### Using Nix
+
+#### Installing Nix
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
+#### Build the Nix development environment
+
+Using `nix develop` will use the `flake.nix` in this repo to create a shell with the packages needed to build this project.
+
+```shell
+kvstore on  main via 🐹
+❯ nix develop -c $SHELL
+...
+
+kvstore on  main via 🐹 via ❄️  impure (nix-shell-env)
+❯
+```
+
+It will build the environment as defined in `flake.nix` and create a new shell. The `-c $SHELL` flag is used if a shell other than bash should be used.
+
+Once the environment is setup, test that it is using the dependencies defined in `flake.nix` by running `make generate` and it should use the Go and protobuf versions available in nixpkgs.
 
 
 ### Building and running manually
